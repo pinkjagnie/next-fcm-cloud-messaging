@@ -9,6 +9,8 @@ const nextConfig = {
     NEXT_APP_APP_ID: process.env.NEXT_APP_APP_ID,
     NEXT_APP_MEASUREMENT_ID: process.env.NEXT_APP_MEASUREMENT_ID,
     NEXT_APP_VAPID_KEY: process.env.NEXT_APP_VAPID_KEY,
+    NEXT_APP_FIREBASE_SERVICE_ACCOUNT_KEY:
+      process.env.NEXT_APP_FIREBASE_SERVICE_ACCOUNT_KEY,
   },
 };
 

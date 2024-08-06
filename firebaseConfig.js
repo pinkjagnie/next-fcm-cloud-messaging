@@ -12,14 +12,14 @@ import {
 } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: process.env.VITE_APP_API_KEY,
-  authDomain: process.env.VITE_APP_AUTH_DOMAIN,
-  projectId: process.env.VITE_APP_PROJECT_ID,
-  storageBucket: process.env.VITE_APP_STORAGE_BUCKET,
-  messagingSenderId: process.env.VITE_APP_MESSAGING_SENDER_ID,
-  appId: process.env.VITE_APP_APP_ID,
-  measurementId: process.env.VITE_APP_MEASUREMENT_ID,
-  vapidKey: process.env.VITE_APP_VAPID_KEY,
+  apiKey: process.env.NEXT_APP_API_KEY,
+  authDomain: process.env.NEXT_APP_AUTH_DOMAIN,
+  projectId: process.env.NEXT_APP_PROJECT_ID,
+  storageBucket: process.env.NEXT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_APP_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_APP_APP_ID,
+  measurementId: process.env.NEXT_APP_MEASUREMENT_ID,
+  vapidKey: process.env.NEXT_APP_VAPID_KEY,
 };
 
 // Initialize Firebase
@@ -34,7 +34,7 @@ const firestore = getFirestore(app);
 export const requestForToken = () => {
   // The method getToken() allows FCM to use the VAPID key credential
   // when sending message requests to different push services
-  return getToken(messaging, { vapidKey: process.env.VITE_APP_VAPID_KEY })
+  return getToken(messaging, { vapidKey: process.env.NEXT_APP_VAPID_KEY })
     .then((currentToken) => {
       if (currentToken) {
         console.log("current token for client: ", currentToken);
@@ -78,6 +78,28 @@ export const requestForToken = () => {
         } else {
           console.log("Token already exists in Firestore.");
         }
+
+        // NEEEEEEEEEEEEEEEEEEEEw
+
+        console.log("currrrrrrrrrrrrentttttttttttt", currentToken);
+
+        const response = fetch("/api/send-notification", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            token: currentToken,
+            title: "Hello!",
+            body: `This is a notification message! And this is your token: ${currentToken}`,
+          }),
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to send notification");
+        }
+
+        console.log("Notification sent successfully");
       } else {
         console.log(
           "No registration token available. Request permission to generate one."

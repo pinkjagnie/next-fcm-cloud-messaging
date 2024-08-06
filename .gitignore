@@ -2,6 +2,7 @@
 
 .env
 firebase-config.json
+serviceAccountKey.json
 
 # dependencies
 /node_modules
