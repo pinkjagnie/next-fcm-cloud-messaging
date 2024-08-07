@@ -1,10 +1,10 @@
 import { NextResponse } from "next/server";
 
-import { firestore, messaging } from "../../../../firebaseAdmin";
+import { firestore, messaging } from "../../../../public/firebaseAdmin";
 
 export async function POST(req, res) {
   if (req.method === "POST") {
-    const { token, title, body } = req.body;
+    const { token, title, body } = await req.json();
 
     try {
       const message = {
@@ -14,6 +14,11 @@ export async function POST(req, res) {
         },
         token: token,
       };
+
+      console.log(
+        "meeeeeeeeeeeeeeesssssssssssssssssssssssssssaaaaaaaaaaaaaaaagggggggggggggee"
+      );
+      console.log(message);
 
       const response = await messaging.send(message);
       console.log("Successfully sent message:", response);

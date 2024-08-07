@@ -1,8 +1,8 @@
 // Scripts for firebase and firebase messaging
-self.importScripts(
+importScripts(
   "https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"
 );
-self.importScripts(
+importScripts(
   "https://www.gstatic.com/firebasejs/9.6.1/firebase-messaging-compat.js"
 );
 

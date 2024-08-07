@@ -1,7 +1,9 @@
+"use client";
+
 import { useEffect } from "react";
 
 import { onMessage } from "firebase/messaging";
-import { messaging, requestForToken } from "./firebase/firebaseConfig";
+import { messaging, requestForToken } from "../../public/firebaseConfig";
 
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
