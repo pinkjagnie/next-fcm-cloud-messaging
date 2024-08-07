@@ -11,29 +11,29 @@ import "react-toastify/dist/ReactToastify.css";
 import Message from "./components/Message";
 
 export default function Home() {
-  useEffect(() => {
-    async function requestPermission() {
-      //requesting permission using Notification API
-      const permission = await Notification.requestPermission();
+  async function requestPermission() {
+    //requesting permission using Notification API
+    const permission = await Notification.requestPermission();
 
-      if (permission === "granted") {
-        requestForToken();
+    if (permission === "granted") {
+      requestForToken();
 
-        onMessage(messaging, (payload) => {
-          console.log("incoming message");
-          console.log(payload);
-          toast(<Message notification={payload.notification} />, {
-            autoClose: false,
-            closeOnClick: false,
-            closeButton: true,
-          });
+      onMessage(messaging, (payload) => {
+        console.log("incoming message");
+        console.log(payload);
+        toast(<Message notification={payload.notification} />, {
+          autoClose: false,
+          closeOnClick: false,
+          closeButton: true,
         });
-      } else if (permission === "denied") {
-        //notifications are blocked
-        alert("You denied for the notification");
-      }
+      });
+    } else if (permission === "denied") {
+      //notifications are blocked
+      alert("You denied for the notification");
     }
+  }
 
+  useEffect(() => {
     requestPermission();
   }, []);
 
