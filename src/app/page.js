@@ -21,15 +21,15 @@ export default function Home() {
     if (permission === "granted") {
       requestForToken();
 
-      onMessage(messaging, (payload) => {
-        console.log("incoming message");
-        console.log(payload);
-        toast(<Message notification={payload.notification} />, {
-          autoClose: false,
-          closeOnClick: false,
-          closeButton: true,
-        });
-      });
+      // onMessage(messaging, (payload) => {
+      //   console.log("incoming message");
+      //   console.log(payload);
+      //   toast(<Message notification={payload.notification} />, {
+      //     autoClose: false,
+      //     closeOnClick: false,
+      //     closeButton: true,
+      //   });
+      // });
     } else if (permission === "denied") {
       //notifications are blocked
       alert("You denied for the notification");
@@ -45,18 +45,18 @@ export default function Home() {
       hasRequestedPermission = true;
     }
 
-    // const unsubscribe = onMessage(messaging, (payload) => {
-    //   console.log("incoming message");
-    //   console.log(payload);
-    //   toast(<Message notification={payload.notification} />, {
-    //     autoClose: false,
-    //     closeOnClick: false,
-    //     closeButton: true,
-    //   });
-    // });
+    const unsubscribe = onMessage(messaging, (payload) => {
+      console.log("incoming message");
+      console.log(payload);
+      toast(<Message notification={payload.notification} />, {
+        autoClose: false,
+        closeOnClick: false,
+        closeButton: true,
+      });
+    });
 
-    // // Clean up the subscription on unmount
-    // return () => unsubscribe();
+    // Clean up the subscription on unmount
+    return () => unsubscribe();
   }, []);
 
   // async function requestPermission() {

@@ -113,6 +113,10 @@ const firestore = getFirestore(app);
 //     });
 // };
 
+navigator.serviceWorker.register("/firebase-messaging-sw.js", {
+  scope: "/firebase-cloud-messaging-push-scope",
+});
+
 export const requestForToken = async () => {
   try {
     const currentToken = await getToken(messaging, {
