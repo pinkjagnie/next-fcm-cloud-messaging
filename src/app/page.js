@@ -9,6 +9,7 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Message from "./components/Message";
+import TokensBox from "./components/TokensBox";
 
 let hasRequestedPermission = false;
 
@@ -65,6 +66,7 @@ export default function Home() {
     <main className="min-h-screen py-24 px-6">
       <h1 className="text-center font-extrabold text-4xl my-10">Hello</h1>
       <ToastContainer />
+      <TokensBox />
     </main>
   );
 }
