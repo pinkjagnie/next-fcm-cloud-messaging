@@ -37,21 +37,18 @@ export async function POST(req, res) {
         console.log("Token already exists in Firestore");
       }
 
-      // NextResponse.status(200).json({ message: "Notification sent successfully" });
       return NextResponse.json(
         { message: "Notification sent successfully" },
         { status: 200 }
       );
     } catch (error) {
       console.error("Error sending message:", error);
-      // NextResponse.status(500).json({ error: "Error sending message" });
       return NextResponse.json(
         { error: "Error sending message" },
         { status: 500 }
       );
     }
   } else {
-    // NextResponse.status(405).json({ error: "Method not allowed" });
     return NextResponse.json({ error: "Method not allowed" }, { status: 405 });
   }
 }

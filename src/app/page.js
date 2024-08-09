@@ -61,18 +61,6 @@ export default function Home() {
     // return () => unsubscribe();
   }, []);
 
-  // async function requestPermission() {
-  //   //requesting permission using Notification API
-  //   const permission = await Notification.requestPermission();
-
-  //   if (permission === "granted") {
-  //     requestForToken();
-  //   } else if (permission === "denied") {
-  //     //notifications are blocked
-  //     alert("You denied for the notification");
-  //   }
-  // }
-
   return (
     <main className="min-h-screen py-24 px-6">
       <h1 className="text-center font-extrabold text-4xl my-10">Hello</h1>
