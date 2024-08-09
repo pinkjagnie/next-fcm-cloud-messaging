@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 
-import { getMessaging, getToken } from "firebase/messaging";
+import { getMessaging, getToken, isSupported } from "firebase/messaging";
 
 import {
   getFirestore,
@@ -27,9 +27,13 @@ const app = initializeApp(firebaseConfig);
 
 // Messaging service
 export const messaging = getMessaging(app);
+// TBD: Broke everyfhing but maybe fixes "FirebaseError: Messaging: This browser doesn't support the API's required to use the Firebase SDK. (messaging/unsupported-browser)"
+// export const messaging = async () => {
+//   await (isSupported() && getMessaging(app));
+// };
 
 // Firestore configure
-const firestore = getFirestore(app);
+export const firestore = getFirestore(app);
 
 // First way to solve about service worker - this works!
 // navigator.serviceWorker.register("/firebase-messaging-sw.js", {
@@ -60,7 +64,9 @@ const getOrRegisterServiceWorker = () => {
 
 export const requestForToken = async () => {
   try {
-    const serviceWorkerRegistration = await getOrRegisterServiceWorker();
+    navigator.serviceWorker.register("/firebase-messaging-sw.js", {
+      scope: "/firebase-cloud-messaging-push-scope",
+    });
 
     const currentToken = await getToken(messaging, {
       vapidKey: process.env.NEXT_APP_VAPID_KEY,
@@ -118,4 +124,16 @@ export const requestForToken = async () => {
       err
     );
   }
+};
+
+export const getTokens = async () => {
+  const serviceWorkerRegistration = await getOrRegisterServiceWorker();
+
+  const tokensCollection = collection(firestore, "tokens");
+  const tokensSnapshot = await getDocs(tokensCollection);
+
+  // tokens into array of tokens
+  const tokens = tokensSnapshot.docs.map((doc) => doc.data().token);
+
+  return tokens;
 };
