@@ -26,6 +26,13 @@ const TokensBox = () => {
           Get tokens
         </button>
       </div>
+      {tokensList && (
+        <div className="flex items-center justify-center pt-10">
+          <button className="bg-stone-500 hover:bg-stone-600 text-white font-semibold py-2 px-4 rounded shadow-md">
+            Push messages to all tokens
+          </button>
+        </div>
+      )}
       {tokensList && <TokensList tokensList={tokensList} />}
     </>
   );
