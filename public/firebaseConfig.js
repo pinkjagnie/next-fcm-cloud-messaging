@@ -26,11 +26,12 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 // Messaging service
-export const messaging = getMessaging(app);
-// TBD: Broke everyfhing but maybe fixes "FirebaseError: Messaging: This browser doesn't support the API's required to use the Firebase SDK. (messaging/unsupported-browser)"
-// export const messaging = async () => {
-//   await (isSupported() && getMessaging(app));
-// };
+// export const messaging = getMessaging(app);
+let messaging;
+if (typeof window !== "undefined") {
+  messaging = getMessaging(app);
+}
+export { messaging };
 
 // Firestore configure
 export const firestore = getFirestore(app);
