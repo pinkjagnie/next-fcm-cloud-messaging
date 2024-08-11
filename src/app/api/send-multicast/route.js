@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { firestore, messaging } from "../../../../public/firebaseAdmin";
+import { removeInvalidToken } from "../../../../public/firebaseConfig";
 
 export async function POST(req, res) {
   if (req.method === "POST") {
@@ -28,7 +29,17 @@ export async function POST(req, res) {
         const failedTokens = [];
         response.responses.forEach((resp, idx) => {
           if (!resp.success) {
-            failedTokens.push(tokens[idx]);
+            const failedToken = tokens[idx];
+            failedTokens.push(failedToken);
+
+            // If the error is about an inactive token - remove it from the database
+            if (
+              resp.error.code ===
+                "messaging/registration-token-not-registered" ||
+              resp.error.code === "messaging/invalid-argument"
+            ) {
+              removeInvalidToken(failedToken);
+            }
           }
         });
         console.log("List of tokens that caused failures:", failedTokens);

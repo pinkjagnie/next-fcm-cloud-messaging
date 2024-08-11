@@ -9,6 +9,8 @@ import {
   where,
   getDocs,
   addDoc,
+  deleteDoc,
+  doc,
 } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -137,4 +139,33 @@ export const getTokens = async () => {
   const tokens = tokensSnapshot.docs.map((doc) => doc.data().token);
 
   return tokens;
+};
+
+// MULTICAST - remove inactive token from database
+export const removeInvalidToken = async (token) => {
+  try {
+    const tokensRef = collection(firestore, "tokens");
+    const q = query(tokensRef, where("token", "==", token));
+    const querySnapshot = await getDocs(q);
+
+    if (!querySnapshot.empty) {
+      querySnapshot.forEach(async (docSnapshot) => {
+        await deleteDoc(doc(firestore, "tokens", docSnapshot.id));
+        console.log(`Token ${token} removed from the database.`);
+      });
+    }
+  } catch (error) {
+    console.error(`Failed to remove token ${token} from the database:`, error);
+  }
+};
+
+// DIRECT MSG - remove inactive token from database
+export const deleteInvalidToken = async (token) => {
+  try {
+    const tokensRef = doc(firestore, "tokens", token);
+    await deleteDoc(tokensRef);
+    console.log(`Token ${token} has been removed from the database.`);
+  } catch (error) {
+    console.error(`Failed to remove token ${token} from the database:`, error);
+  }
 };

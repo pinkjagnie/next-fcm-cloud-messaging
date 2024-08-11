@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 
 import { firestore, messaging } from "../../../../../public/firebaseAdmin";
+import { deleteInvalidToken } from "../../../../../public/firebaseConfig";
 
 export async function POST(req, res) {
   if (req.method === "POST") {
@@ -29,6 +30,18 @@ export async function POST(req, res) {
       );
     } catch (error) {
       console.error("Error sending direct message:", error);
+
+      // Checking if the error is related to an invalid token
+      if (error.code === "messaging/registration-token-not-registered") {
+        // Remove the token from the database because it is out dated
+        await deleteInvalidToken(token);
+
+        return NextResponse.json(
+          { error: "The token is no longer valid and has been removed." },
+          { status: 404 } // 404 - informs that token has not been found
+        );
+      }
+
       return NextResponse.json(
         { error: "Error sending direct message" },
         { status: 500 }
